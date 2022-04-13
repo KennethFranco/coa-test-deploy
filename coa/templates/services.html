@@ -1,0 +1,469 @@
+{% extends 'base.html' %} {% load static %}
+<head>
+  {% block title %}
+  <title>Services</title>
+  {% endblock %}
+  <script
+    src="https://kit.fontawesome.com/c735b10dd8.js"
+    crossorigin="anonymous"
+  ></script>
+</head>
+<body>
+  {% block content %}
+  <div class="container">
+    <!-- TITLE -->
+    <div class="row mb-5">
+      <h2 class="orangeText">Always in Service</h2>
+      <p class="body">
+        Avail of the different services that COA-M offers to organizations!
+      </p>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div
+          class="dropdown mt-2"
+          style="
+            position: static;
+            top: 0;
+            z-index: 100;
+            width: 283px;
+            height: 40px;
+          "
+        >
+          <div
+            class="servicesSortMenu"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            style="
+              width: 120px;
+              height: 40px;
+              background-color: transparent;
+              border: 2px solid #3b23ee;
+              box-sizing: border-box;
+              border-radius: 8px;
+              padding: 8px 16px 8px 8px;
+            "
+          >
+            <p class="body buttonText" id="currentDateFilter">
+              <svg
+                class="svgServicesMenu"
+                style="
+                  color: #3b23ee;
+                  width: 22px;
+                  height: 22px;
+                  margin-right: 0px;
+                "
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                class="bi bi-filter"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"
+                />
+              </svg>
+              <span style="margin-left: 12px" class="button buttonServicesMenu">
+                FILTER
+              </span>
+            </p>
+          </div>
+          <div
+            class="dropdown-menu"
+            aria-labelledby="dropdownMenuButton"
+            id="servicesDropdown"
+          >
+            <form>
+              {% for s in serviceTags %}
+              <a
+                onclick="activateCheckBox(id = `{{forloop.counter0}}`)"
+                style="cursor: pointer"
+                class="dropdown-item body secondDropdownBody"
+                href="#"
+              >
+                <input
+                  id="{{forloop.counter0}}-tagNumber"
+                  type="checkbox"
+                  style="width: 18px; height: 18px; margin-left: 15px"
+                />
+                <span id="{{forloop.counter0}}spanNumber">{{ s.title }}</span>
+              </a>
+              {% endfor %}
+            </form>
+            <a
+              onclick="applyFilters()"
+              class="dropdown-item body secondDropdownBody p-0"
+              style="margin-top: 8px"
+              ><button style="width: 100%; height: 40px">
+                apply filters
+              </button></a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-10 col-lg-12 p-3">
+        <p class="serviceTagContainer" id="servicesAppliedTags"></p>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="mt-5 mb-5" id="allServicesFrame">
+      {% for s in services %}
+      <div class="row mb-5">
+        <div class="col-2 col-sm-1 text-center">
+          <img
+            src="{% static 'images/Services_List Star.svg' %}"
+            class="mt-1"
+            alt=""
+          />
+        </div>
+        <div class="col-10 col-sm-11">
+          <div class="row" style="width: 98%">
+            <h1 class="orangeText">{{ s.name }}</h1>
+            <p>{{ s.body|safe }}</p>
+          </div>
+          <div class="row">
+            <div class="col-sm-10 servicesTagList serviceTagContainer">
+              {% for tag in s.tags.all %}
+              <span
+                class="serviceTag label"
+                style="margin-right: 8px; margin-bottom: 8px"
+              >
+                {{ tag }}
+              </span>
+              {% endfor %}
+            </div>
+            <div class="col-2 availButtonContainer">
+              <div class="subContainer">
+                <a href="{{s.link}}" target="_blank" rel="noreferrer noopener"
+                  ><button style="min-width: 128px; min-height: 40px">
+                    Avail
+                  </button></a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="w-100" style="height: 1px" />
+      {% endfor %}
+    </div>
+    <div
+      class="row"
+      id="servicesNoResults"
+      style="display: none; margin-bottom: 128px"
+    >
+      <img
+        class="text-center"
+        src="{% static 'images/coala.png' %}"
+        alt="elo"
+        style="
+          margin: 0 auto;
+          display: block;
+          width: 284px;
+          height: 284px;
+          margin-bottom: 20px;
+        "
+      />
+      <p class="subtitle1 blueberryText text-center">
+        Sorry! We don’t have a service for that right now...
+      </p>
+    </div>
+  </div>
+
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+    integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+    integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    filteredList = [];
+    filtersExist = false;
+
+    // If first time for user, sets local storage services filter to none
+    if (localStorage.getItem("servicesFilters") === null) {
+      localStorage.setItem("servicesFilters") === "";
+    }
+
+    var filters = localStorage.getItem("servicesFilters");
+    console.log(filters);
+
+    // Checks if filters are not "", if so, changes filtersExist to true
+    // if (filters != "") {
+    //   filtersExist = true;
+    // }
+
+    // console.log(filtersExist);
+
+    // Sets initial filters
+    // function setInitialFilters() {
+    //   var filters = localStorage.getItem("servicesFilters");
+    //   //   applyFilters();
+    // }
+
+    // if (filtersExist == true) {
+    //   setInitialFilters();
+    // }
+
+    function removeAllChildNodes(parent) {
+      while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+      }
+    }
+
+    function activateCheckBox(id) {
+      actualId = id + "-tagNumber";
+      checker = document.getElementById(actualId).checked;
+      if (checker == true) {
+        document.getElementById(actualId).checked = false;
+      } else {
+        document.getElementById(actualId).checked = true;
+      }
+    }
+
+    function applyFilters() {
+      filteredList = [];
+      children = document.getElementById("servicesDropdown").children[0];
+      for (var i = 0; i < children.length; i++) {
+        var actualChild = children[i];
+        var childIDSplit = actualChild.id.split("-")[0];
+        var childID = childIDSplit + "spanNumber";
+        console.log(childID);
+        var checker = actualChild.checked;
+
+        if (checker == true) {
+          var addedFilter = document.getElementById(childID).textContent;
+          console.log(addedFilter);
+          filteredList.push(addedFilter);
+          console.log(filteredList);
+        }
+      }
+      localStorage.setItem("servicesFilters", filteredList);
+      console.log(filteredList);
+      visualizeFilters();
+    }
+
+    function visualizeFilters() {
+      removeAllChildNodes(document.getElementById("servicesAppliedTags"));
+      var counter = 0;
+      for (var i = 0; i < filteredList.length; i++) {
+        var filterSpan = document.createElement("span");
+        filterSpan.classList.add("serviceTag");
+        filterSpan.classList.add("label");
+        filterSpan.style.marginRight = "8px";
+        filterSpan.style.color = "#535353";
+        filterSpan.textContent = filteredList[i];
+        var x = document.createElement("IMG");
+        x.src = "../static/images/divider.png";
+        x.style.marginLeft = "8px";
+        x.style.marginRight = "8px";
+
+        filterSpan.appendChild(x);
+
+        var filter = filteredList[i];
+        var y = document.createElement("IMG");
+        y.src = "../static/images/cross.png";
+        y.style.width = "8px";
+        y.style.height = "8px";
+        y.style.cursor = "pointer";
+
+        function someFunc(index) {
+          y.addEventListener("click", function () {
+            console.log(filteredList[index]);
+            children = document.getElementById("servicesDropdown").children[0];
+            console.log(children);
+            var counter = 0;
+            for (var i = 0; i < children.length; i++) {
+              spanNumber = counter + "spanNumber";
+              checker = document.getElementById(spanNumber).textContent;
+
+              if (filteredList[index] === checker) {
+                console.log("here");
+                children[i].checked = false;
+              }
+              counter += 1;
+            }
+            applyFilters();
+          });
+        }
+
+        someFunc(i);
+
+        filterSpan.appendChild(y);
+        document.getElementById("servicesAppliedTags").appendChild(filterSpan);
+      }
+      if (filteredList.length != 0) {
+        var clearSpan = document.createElement("span");
+        clearSpan.classList.add("buttonText");
+        clearSpan.textContent = "CLEAR";
+        clearSpan.style.color = "#3B23EE";
+        clearSpan.style.marginTop = "8px";
+        clearSpan.style.marginLeft = "24px";
+        clearSpan.style.cursor = "pointer";
+        clearSpan.addEventListener("click", function () {
+          console.log("WIP");
+          children = document.getElementById("servicesDropdown").children[0];
+          console.log(children);
+          for (var i = 0; i < children.length; i++) {
+            children[i].checked = false;
+          }
+          applyFilters();
+        });
+        document.getElementById("servicesAppliedTags").appendChild(clearSpan);
+        visualizeServices();
+      } else {
+        document.getElementById("servicesNoResults").style.display = "none";
+        console.log("0");
+        children = document.getElementById("allServicesFrame").children;
+        console.log(children);
+        for (i = 0; i < children.length; i++) {
+          console.log("show");
+          children[i].style.display = "";
+        }
+      }
+    }
+
+    function visualizeServices() {
+      var atLeastOneOrg = false;
+      children = document.getElementById("allServicesFrame").children;
+      // iterates through list
+      for (i = 0; i < children.length; i++) {
+        // checks if DIV, not HR
+        if (children[i].nodeName == "DIV") {
+          console.log(children[i]);
+          tagsList = [];
+          tags = children[i].children[1].children[1].children[0].children;
+
+          // pushes tags to tags list
+          for (j = 0; j < tags.length; j++) {
+            tagsList.push(tags[j].textContent.trim());
+          }
+          console.log(tagsList);
+          requiredLength = filteredList.length;
+          console.log(requiredLength);
+          checkerLength = 0;
+
+          for (k = 0; k < tagsList.length; k++) {
+            console.log(tagsList[k]);
+            for (l = 0; l < filteredList.length; l++) {
+              console.log(filteredList[l]);
+              if (filteredList[l] == tagsList[k]) {
+                checkerLength += 1;
+              }
+            }
+          }
+
+          console.log("Checker Length: " + checkerLength);
+          if (checkerLength >= requiredLength) {
+            console.log("should show");
+            children[i].style.display = "";
+            children[i + 1].style.display = "";
+          } else {
+            console.log("shouldnt show");
+            children[i].style.display = "none";
+            children[i + 1].style.display = "none";
+          }
+
+          // checks tagsList, compares it to filteredList
+          // for (k = 0; k < tagsList.kength; k++) {
+          //   console.log("Current tag of org being checked: " + tagsList[k]);
+          //   for (l = 0; l < filteredList.length; l++) {
+          //     console.log("Current filter being checked: " + filteredList[l]);
+          //     if (tagsList[k] == filteredList[l]) {
+          //       checkerLength += 1;
+          //       console.log("match");
+          //     }
+          //   }
+          // }
+
+          // console.log(checkerLength);
+          // if (checkerLength >= requiredLength) {
+          //   children[i].display = "";
+          // } else {
+          //   children[i].display = "none";
+          // }
+        }
+      }
+      // for (i = 0; i < children.length; i++) {
+      //   tagsList = [];
+      //   tags = children[i].children[1].children;
+      //   for (j = 0; j < tags.length; j++) {
+      //     tagsList.push(tags[j].textContent.trim());
+      //   }
+
+      //   requiredLength = tagsList.length;
+      //   console.log("required length for this org: " + requiredLength);
+      //   checkerLength = 0;
+      //   for (k = 0; k < tagsList.length; k++) {
+      //     console.log(
+      //       "org# " + i + " current tag being checked: " + tagsList[k]
+      //     );
+      //     for (l = 0; l < filteredList.length; l++) {
+      //       console.log(
+      //         "current filter being checked compared to tag: " + filteredList[l]
+      //       );
+      //       console.log(filteredList[l]);
+      //       console.log(tagsList[k]);
+      //       if (filteredList[l] == tagsList[k]) {
+      //         checkerLength += 1;
+      //         console.log("match");
+      //         break;
+      //       }
+      //     }
+      //   }
+
+      //   if (checkerLength >= requiredLength) {
+      //     children[i].style.display = "";
+      //     atLeastOneOrg = true;
+      //   } else {
+      //     children[i].style.display = "none";
+      //   }
+      // }
+      // if (atLeastOneOrg == false) {
+      //   document.getElementById("servicesNoResults").style.display = "";
+      // } else {
+      //   document.getElementById("servicesNoResults").style.display = "none";
+      // }
+    }
+  </script>
+
+  <!-- <script>
+    var availButtonContainer = document.getElementsByClassName(
+      "availButtonContainer"
+    );
+    var subContainer = document.getElementsByClassName("subContainer");
+    function availButtonRearrange() {
+      for (i in availButtonContainer) {
+        if (window.innerWidth >= 768) {
+          i.classList = "col-2";
+        } else {
+          i.classList = "row";
+        }
+        for (j in subContainer) {
+          if (window.innerWidth >= 768) {
+            j.classList = "";
+          } else {
+            j.classList = "d-flex justify-content-end";
+          }
+        }
+      }
+    }
+    window.addEventListener("resize", availButtonRearrange);
+    window.addEventListener("load", availButtonRearrange);
+  </script> -->
+
+  {% endblock %}
+</body>

@@ -1,0 +1,587 @@
+{% extends 'base.html' %} {% load static %} {% block title %}
+<title>{{lia.name}}</title>
+{% endblock %}
+<body>
+  {% block content %}
+  <div class="container mb-5">
+    <!-- FIRST FRAME -->
+    <div class="orgFirstFrame">
+      <div class="row orgBack" style="width: fit-content">
+        <a href="{% url 'organizations'%}"
+          ><i class="fa-solid fa-arrow-left"></i><label>back</label>
+        </a>
+      </div>
+      <div class="row mt-5 mb-5">
+        <div class="col-3 d-flex align-items-center" id="orgLogoContainer">
+          <img src="{{lia.logo.url}}" alt="" id="orgLogo" />
+        </div>
+        <div class="col-md-9 col-sm-12 titleAndLinks">
+          <div class="orgTagContainer">
+            {% for tag in lia.tags.all %}
+            <span class="orgTag"> {{ tag }} </span>
+            {% endfor %}
+          </div>
+          <div class="row">
+            <h1 class="orangeText">{{ lia.name }}</h1>
+          </div>
+          <div class="row">
+            <h2 class="orangeText">{{lia.abbreviation}}</h2>
+          </div>
+          <div class="indivOrgLinks">
+            <a id="email" href="mailto:{{lia.email}}"
+              ><button class="btn-circle-contactUs">
+                <i class="fa-solid fa-envelope fa-lg"></i></button
+            ></a>
+            <a id="website" href="{{lia.website_link}}"
+              ><button class="btn-circle-contactUs">
+                <i class="fa-solid fa-globe"></i></button
+            ></a>
+            <a id="fb" href="{{lia.facebook_link}}"
+              ><button class="btn-circle-contactUs">
+                <i class="fa-brands fa-facebook-f"></i></button
+            ></a>
+            <a id="twt" href="{{lia.twitter_link}}"
+              ><button class="btn-circle-contactUs">
+                <i class="fa-brands fa-twitter"></i></button
+            ></a>
+            <a id="ig" href="{{lia.instagram_link}}"
+              ><button class="btn-circle-contactUs">
+                <i class="fa-brands fa-instagram fa-lg"></i></button
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <p>{{lia.description}}</p>
+      </div>
+    </div>
+
+    <!-- LATEST EVENTS (With Table of Contents)-->
+    <div
+      class="row d-flex justify-content-end w-100 dd"
+      style="position: sticky; top: 0; z-index: 1; padding-right: 1rem"
+      id="ddcontainer"
+    >
+      <div
+        class="dropdown tableOfContents"
+        style="margin-bottom: -4rem"
+        id="tableOfContents"
+      >
+        <div
+          class="clusterSortMenu tableOfContentsButton"
+          type="button"
+          id="dropdownMenuButtonIndiv"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <p class="body">
+            Table of Contents
+            <img
+              src="{% static 'images/union.png' %}"
+              style="width: 9px; height: 5px; float: right; margin-top: 10px"
+              alt=""
+            />
+          </p>
+        </div>
+        <div
+          class="dropdown-menu tableOfContentsMenu w-100"
+          aria-labelledby="dropdownMenuButtonIndiv"
+          id="dropdownMenuIndiv"
+        >
+          <a class="dropdown-item w-100" href="#latestEvents"
+            ><i class="fa-solid fa-angles-right" id="doublearrow1"></i
+            ><span>Latest Events</span></a
+          >
+          <a class="dropdown-item w-100" href="#advocacy"
+            ><i class="fa-solid fa-angles-right" id="doublearrow2"></i
+            ><span>Advocacy</span></a
+          >
+          <a class="dropdown-item w-100" href="#coreComp"
+            ><i class="fa-solid fa-angles-right" id="doublearrow3"></i
+            ><span>Core Competensies</span></a
+          >
+          <a class="dropdown-item w-100" href="#top3"
+            ><i class="fa-solid fa-angles-right" id="doublearrow4"></i
+            ><span>Top 3 Projects</span></a
+          >
+          <a class="dropdown-item w-100" href="#memberStories"
+            ><i class="fa-solid fa-angles-right" id="doublearrow5"></i
+            ><span>Member Stories</span></a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <h2 class="orangeText contentTitle" id="latestEvents">Latest Events</h2>
+    </div>
+    <div class="row" id="eventsFrame">
+      {% if event.count == 0 %}
+      <img
+        class="text-center"
+        src="{% static 'images/coala.png' %}"
+        alt="elo"
+        style="
+          margin: 0 auto;
+          display: block;
+          width: 284px;
+          height: 284px;
+          margin-bottom: 20px;
+        "
+      />
+      <p class="subtitle1 blueberryText text-center">
+        Sorry! No events seem to be scheduled for this org...
+      </p>
+      {% else %} {% for e in event %} {% if forloop.counter|divisibleby:2 %}
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div class="eventBoxEven p-4" style="margin: auto">
+          <p class="small" style="margin-bottom: 0px">
+            {{ e.start_date|date:'F' }}
+            <!-- if end date exists -->
+            {% if e.end_date %}
+            <!--  -->
+            {% if e.start_date|date:'F' != e.end_date|date:'F' %} -
+            {{e.end_date|date:'F' }} {% endif %} {% endif %}
+          </p>
+          <h2>
+            {{ e.start_date.day }} {% if e.end_date.day %} - {{ e.end_date.day}}
+            {% endif %}
+            <span class="orgTag"> {{ e.organization }} </span>
+          </h2>
+          <p class="subtitle2">{{ e.name }}</p>
+          <div class="eventBottomDetails">
+            <p class="small">
+              <i
+                class="fa-regular fa-clock"
+                style="margin-right: 8px; height: 16px; width: 16px"
+              ></i>
+              {% if e.all_day %} All Day {% else %} {{ e.start_time }} - {{
+              e.end_time }} {% endif %}
+            </p>
+            <p class="small">
+              <i
+                class="fa-solid fa-location-dot"
+                style="
+                  color: white;
+                  margin-right: 8px;
+                  height: 16px;
+                  width: 16px;
+                "
+              ></i>
+              {{ e.platform }}
+            </p>
+          </div>
+
+          <div class="eventBottomDetails2">
+            <a href="{{ e.event_link }}" target="_blank">
+              <i
+                class="fa-solid fa-arrow-up-right-from-square"
+                style="color: white"
+              ></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div class="eventBoxOdd p-4" style="margin: auto">
+          <p class="small" style="margin-bottom: 0px">
+            {{ e.start_date|date:'F' }} {% if e.end_date %} {% if
+            e.start_date|date:'F' != e.end_date|date:'F' %} -
+            {{e.end_date|date:'F' }} {% endif %} {% endif %}
+          </p>
+          <h2>
+            {{ e.start_date.day }} {% if e.end_date.day %} - {{ e.end_date.day}}
+            {% endif %}
+            <span class="orgTag"> {{ e.organization }} </span>
+          </h2>
+          <p class="subtitle2">{{ e.name }}</p>
+          <div class="eventBottomDetails">
+            <p class="small">
+              <i
+                class="fa-regular fa-clock"
+                style="margin-right: 8px; height: 16px; width: 16px"
+              ></i>
+              {% if e.all_day %} All Day {% else %} {{ e.start_time }} - {{
+              e.end_time }} {% endif %}
+            </p>
+            <p class="small">
+              <i
+                class="fa-solid fa-location-dot"
+                style="
+                  color: white;
+                  margin-right: 8px;
+                  height: 16px;
+                  width: 16px;
+                "
+              ></i>
+              {{ e.platform }}
+            </p>
+          </div>
+
+          <div class="eventBottomDetails2">
+            <a href="{{ e.event_link }}" target="_blank">
+              <i
+                class="fa-solid fa-arrow-up-right-from-square"
+                style="color: white"
+              ></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endif %} {% endfor %} {% endif %}
+    </div>
+
+    <!-- ADVOCACY -->
+    <div class="row">
+      <h2 class="orangeText contentTitle" id="advocacy">Advocacy</h2>
+    </div>
+
+    <div class="row">
+      <p class="body">{{ lia.advocacy }}</p>
+    </div>
+
+    <!-- CORE COMPETENICES -->
+    <div class="row">
+      <h2 class="orangeText contentTitle" id="coreComp">Core Competencies</h2>
+    </div>
+
+    <div class="row">
+      <p class="body">{{ lia.core_competencies }}</p>
+    </div>
+
+    <!-- TOP 3 PROJECTS -->
+    <div class="row" id="top3">
+      <h2 class="orangeText contentTitle">Top 3 Projects</h2>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 col-sm-12">
+        <img src="{{ lia.project1_photo.url }}" class="projectImage" alt="" />
+        <h3 class="orangeText mt-3">{{ lia.project1_name }}</h3>
+        <blockquote>{{ lia.project1_description }}</blockquote>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <img src="{{ lia.project2_photo.url }}" class="projectImage" alt="" />
+        <h3 class="orangeText mt-3">{{ lia.project2_name }}</h3>
+        <blockquote>{{ lia.project2_description }}</blockquote>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <img src="{{ lia.project3_photo.url }}" class="projectImage" alt="" />
+        <h3 class="orangeText mt-3">{{ lia.project3_name }}</h3>
+        <blockquote>{{ lia.project3_description }}</blockquote>
+      </div>
+    </div>
+
+    <!-- MEMBER STORIES  -->
+    <div class="row">
+      <h2 class="orangeText contentTitle" id="memberStories">Member Stories</h2>
+
+      <div class="row p-0 mt-5 mx-auto" id="firstRowMember">
+        <div
+          class="col-sm-2 mx-auto"
+          id="firstRowPic"
+          style="height: 181px; width: 181px"
+        >
+          <img
+            src="{{ lia.memberstory1_photo.url }}"
+            class="memberStoryImage memberImageCropper"
+            alt=""
+          />
+        </div>
+
+        <div class="col-md-9 my-auto mx-auto" id="firstRowParagraph">
+          <div class="my-auto" id="firstRowContainer">
+            <p id="firstRowContent">{{lia.memberstory1_content|safe}}</p>
+            <p class="memberName" id="firstRowName">
+              - {{lia.memberstory1_name}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row p-0 mt-5 mx-auto" id="secondRowMember">
+        <div class="col-md-9 mx-auto my-auto" id="secondRowParagraph">
+          <div class="my-auto" id="secondRowContainer">
+            <p class="memberStoriesRight" id="secondRowContent">
+              {{lia.memberstory2_content|safe}}
+            </p>
+            <p class="memberName memberStoriesRight" id="secondRowName">
+              - {{lia.memberstory2_name}}
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="col-md-2 mx-auto"
+          style="height: 181px; width: 181px"
+          id="secondRowPic"
+        >
+          <img
+            src="{{ lia.memberstory2_photo.url }}"
+            class="memberStoryImage memberImageCropper"
+            alt=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock content %} {% block script %}
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+    integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+    integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+    crossorigin="anonymous"
+  ></script>
+
+  <script>
+    function checkLink(id) {
+      var element = document.getElementById(id);
+      if (element.href.includes("None")) {
+        element.style.display = "none";
+      }
+    }
+    checkLink("email");
+    checkLink("website");
+    checkLink("fb");
+    checkLink("ig");
+    checkLink("twt");
+
+    function fixLogo() {
+      var orglogoContainer = document.getElementById("orgLogoContainer");
+      var orgLogo = document.getElementById("orgLogo");
+      var ddcontainer = document.getElementById("ddcontainer");
+      var ddbutton = document.getElementById("tableOfContents");
+      var ddbuttonbutton = document.getElementById("dropdownMenuButtonIndiv");
+      var ddmenu = document.getElementById("dropdownMenuIndiv");
+      var dditem = document.getElementsByClassName("dropdown-item");
+
+      if (window.innerWidth <= 768) {
+        orglogoContainer.classList =
+          "row d-flex align-items-center justify-content-center mb-5";
+        orgLogo.style.width = "60%";
+      } else if (window.innerWidth > 768) {
+        orglogoContainer.classList = "col-3 d-flex align-items-center";
+        orgLogo.style.width = "";
+      }
+
+      if (window.innerWidth >= 992) {
+        ddcontainer.classList = "row d-flex justify-content-end w-100 dd";
+        ddbuttonbutton.classList = "clusterSortMenu tableOfContentsButton";
+        if (ddbutton.classList.contains("show")) {
+          ddbutton.classList = "dropdown tableOfContents show";
+        } else {
+          ddbutton.classList = "dropdown tableOfContents";
+        }
+        normalEvent();
+      } else if (window.innerWidth <= 991) {
+        ddcontainer.classList = "row dd";
+        ddbuttonbutton.classList =
+          "clusterSortMenu tableOfContentsButton w-100";
+        if (ddbutton.classList.contains("show")) {
+          ddbutton.classList = "dropdown tableOfContents w-100 show";
+        } else {
+          ddbutton.classList = "dropdown tableOfContents w-100";
+        }
+        twoColumnsEvent();
+      }
+    }
+    window.addEventListener("load", fixLogo);
+    window.addEventListener("resize", fixLogo);
+    function normalEvent() {
+      console.log("normal");
+      var counter = 1;
+      const events = document.getElementById("eventsFrame");
+      var children = events.children;
+      for (var i = 0; i < children.length; i++) {
+        var actualChild = children[i].children[0];
+        if (counter % 5 == 0) {
+          counter += 1;
+        }
+        if (counter % 2 == 0) {
+          actualChild.style.transition = "0s";
+          actualChild.style.backgroundColor = "#EA6710";
+          actualChild.style.transition = "0.25s";
+        } else {
+          actualChild.style.transition = "0s";
+          actualChild.style.backgroundColor = "#4752A2";
+          actualChild.style.transition = "0.25s";
+        }
+        counter += 1;
+      }
+    }
+
+    function twoColumnsEvent() {
+      console.log("twoColumns");
+      var counter = 1;
+      const events = document.getElementById("eventsFrame");
+      var children = events.children;
+      for (var i = 0; i < children.length; i++) {
+        var actualChild = children[i].children[0];
+        if (counter % 3 == 0) {
+          counter += 1;
+        }
+        if (counter % 2 == 0) {
+          actualChild.style.transition = "0s";
+          actualChild.style.backgroundColor = "#EA6710";
+          actualChild.style.transition = "0.25s";
+        } else {
+          actualChild.style.transition = "0s";
+          actualChild.style.backgroundColor = "#4752A2";
+          actualChild.style.transition = "0.25s";
+        }
+        counter += 1;
+      }
+    }
+  </script>
+  <script>
+    // TABLE OF CONTENTS DROP DOWN
+    var doublearrow1 = document.getElementById("doublearrow1");
+    var doublearrow2 = document.getElementById("doublearrow2");
+    var doublearrow3 = document.getElementById("doublearrow3");
+    var doublearrow4 = document.getElementById("doublearrow4");
+    var doublearrow5 = document.getElementById("doublearrow5");
+    var latestEvents = document.getElementById("latestEvents");
+    var advocacy = document.getElementById("advocacy");
+    var coreComp = document.getElementById("coreComp");
+    var top3 = document.getElementById("top3");
+    var memberStories = document.getElementById("memberStories");
+    var latestEventsPosition,
+      advocacyPosition,
+      coreCompPosition,
+      top3Position,
+      memberStoriesPosition;
+
+    function setTops() {
+      latestEventsPosition = latestEvents.offsetTop;
+      advocacyPosition = advocacy.offsetTop;
+      coreCompPosition = coreComp.offsetTop;
+      top3Position = top3.offsetTop;
+      memberStoriesPosition = memberStories.offsetTop;
+    }
+    function trigger() {
+      var currentScrollY = window.scrollY + 2;
+      if (currentScrollY < latestEventsPosition) {
+        doublearrow1.style.opacity = "0";
+        doublearrow2.style.opacity = "0";
+        doublearrow3.style.opacity = "0";
+        doublearrow4.style.opacity = "0";
+        doublearrow5.style.opacity = "0";
+      } else if (
+        currentScrollY >= latestEventsPosition &&
+        currentScrollY < advocacyPosition
+      ) {
+        doublearrow1.style.opacity = "100";
+        doublearrow2.style.opacity = "0";
+        doublearrow3.style.opacity = "0";
+        doublearrow4.style.opacity = "0";
+        doublearrow5.style.opacity = "0";
+      } else if (
+        currentScrollY >= advocacyPosition &&
+        currentScrollY < coreCompPosition
+      ) {
+        doublearrow1.style.opacity = "0";
+        doublearrow2.style.opacity = "100";
+        doublearrow3.style.opacity = "0";
+        doublearrow4.style.opacity = "0";
+        doublearrow5.style.opacity = "0";
+      } else if (
+        currentScrollY >= coreCompPosition &&
+        currentScrollY < top3Position
+      ) {
+        doublearrow1.style.opacity = "0";
+        doublearrow2.style.opacity = "0";
+        doublearrow3.style.opacity = "100";
+        doublearrow4.style.opacity = "0";
+        doublearrow5.style.opacity = "0";
+      } else if (
+        currentScrollY >= top3Position &&
+        currentScrollY < memberStoriesPosition
+      ) {
+        doublearrow1.style.opacity = "0";
+        doublearrow2.style.opacity = "0";
+        doublearrow3.style.opacity = "0";
+        doublearrow4.style.opacity = "100";
+        doublearrow5.style.opacity = "0";
+      } else if (currentScrollY >= memberStoriesPosition) {
+        doublearrow1.style.opacity = "0";
+        doublearrow2.style.opacity = "0";
+        doublearrow3.style.opacity = "0";
+        doublearrow4.style.opacity = "0";
+        doublearrow5.style.opacity = "100";
+      }
+    }
+    window.addEventListener("load", setTops);
+    window.addEventListener("resize", setTops);
+    window.addEventListener("scroll", trigger);
+  </script>
+  <script>
+    let firstRowPic = document.getElementById("firstRowPic");
+    let firstRowParagraph = document.getElementById("firstRowParagraph");
+    let firstRowMember = document.getElementById("firstRowMember");
+    let firstRowContent = document.getElementById("firstRowContent");
+    let firstRowName = document.getElementById("firstRowName");
+    let firstRowContainer = document.getElementById("firstRowContainer");
+
+    let secondRowPic = document.getElementById("secondRowPic");
+    let secondRowParagraph = document.getElementById("secondRowParagraph");
+    let secondRowMember = document.getElementById("secondRowMember");
+    let secondRowContent = document.getElementById("secondRowContent");
+    let secondRowName = document.getElementById("secondRowName");
+    let secondRowContainer = document.getElementById("secondRowContainer");
+
+    function memberStoriesMobile() {
+      firstRowContent.classList.add("memberStoriesCenter");
+      firstRowName.classList.add("memberStoriesCenter");
+      firstRowParagraph.classList.add("mt-4");
+      firstRowContainer.classList.add("mx-2");
+
+      secondRowMember.classList.add("flex-column-reverse");
+      secondRowContent.classList.remove("memberStoriesRight");
+      secondRowName.classList.remove("memberStoriesRight");
+      secondRowContent.classList.add("memberStoriesCenter");
+      secondRowName.classList.add("memberStoriesCenter");
+      secondRowParagraph.classList.add("mt-4");
+      secondRowContainer.classList.add("mx-2");
+    }
+
+    function removeMemberStoriesMobile() {
+      firstRowContent.classList.remove("memberStoriesCenter");
+      firstRowName.classList.remove("memberStoriesCenter");
+      firstRowParagraph.classList.remove("mt-4");
+      firstRowContainer.classList.remove("mx-2");
+
+      secondRowMember.classList.remove("flex-column-reverse");
+      secondRowContent.classList.remove("memberStoriesCenter");
+      secondRowName.classList.remove("memberStoriesCenter");
+      secondRowContent.classList.add("memberStoriesRight");
+      secondRowName.classList.add("memberStoriesRight");
+      secondRowParagraph.classList.remove("mt-4");
+      secondRowContainer.classList.remove("mx-2");
+    }
+
+    function memberStoriesFormat() {
+      if (window.innerWidth <= 991) {
+        console.log(screen.width);
+        console.log("test");
+        memberStoriesMobile();
+      } else if (window.innerWidth > 991) {
+        console.log(screen.width);
+        removeMemberStoriesMobile();
+      }
+    }
+
+    window.addEventListener("resize", memberStoriesFormat);
+    window.addEventListener("load", memberStoriesFormat);
+  </script>
+  {% endblock %}
+</body>

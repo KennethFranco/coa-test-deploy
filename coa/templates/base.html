@@ -1,0 +1,322 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="{% static 'scripts/jquery-3.6.0.min.js' %}"> </script>
+    
+    <!-- FOOTER BUTTON ICON SCRIPT  -->
+    <script src="https://kit.fontawesome.com/c735b10dd8.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/3da0178481.js" crossorigin="anonymous"></script>
+    <!-- FOOTER BUTTON ICON SCRIPT  -->
+ 
+    {% block title %}
+    <title>
+        COA Manila
+    </title>
+    {% endblock %}
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}"/>
+    
+</head>
+<body>
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar navbar-expand-lg shadow navZindex" id="navBarMain">
+        <!-- LOGO -->
+        <div class="col-5 navbar-brand">
+            <img src="{% static 'images/coa_logo.png' %}" class="navLogo">
+        </div>
+        
+        <!-- NAV MENU BUTTON -->
+        <a type="button" class="navbar-toggler collapsed navMenuButton" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" onclick="showMenu(this)">
+            <div class="hamburgerCont">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+        </a>
+
+        <!-- NAV TITLES -->
+        <div class="col-7 body collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav text-center">
+                <a href="{% url 'home' %}" id="home" class="nav-item nav-link">Home</a>
+                <a href="{% url 'about' %}" id="about" class="nav-item nav-link">About</a>
+                <a href="{% url 'organizations' %}" id="org" class="nav-item nav-link">Organizations</a>
+                <a href="{% url 'services' %}" id="serv" class="nav-item nav-link">Services</a>
+                <a href="{% url 'newsletters' %}" id="news" class="nav-item nav-link">Newsletters</a>
+                <a href="{% url 'contactUs' %}" id="cont" class="nav-item nav-link">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <div class="bodySpace">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="page-footer" style="color: white;" id="footer">
+        <div class="container">
+            <div class="row" style="padding-top: 40px; color: white">
+    
+            <!-- FIRST COLUMN START -->
+            <div class="col-md-4" id="footerfirstcol">
+                <div id="firstcologo">
+                <img src="{% static 'images/COAlogo.png' %}" alt="" style="height: 78px;width: 78px;">
+                </div>
+                <div id="firstcoldesc">
+                <ul class="list-unstyled" style="margin-top: 18px;" id="firstcolul">
+                    <li>
+                    <p class="m-0 textfooter">Copyright © 2022.</p>
+                    </li>
+                    <li style="margin-top: 8px;">
+                    <p class="m-0 textfooter" style="width: 181px;">Council of Organizations of the Ateneo - Manila.</p>
+                    </li>
+                    <li style="margin-top: 8px;">
+                    <p class="m-0 textfooter">All Rights Reserved.</p>
+                    </li>
+                </ul>
+                </div>
+            </div>
+            <!-- FIRST COLUMN END -->
+    
+            <hr class="clearfix w-100 d-md-none invisible">
+    
+            <!-- SECOND COLUMN START -->
+            <div class="col-md-4" id="footersecondcol">
+                <h3 class="headerfooter m-0">Explore</h5>
+                <div class="row">
+                    <div class="col">
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="{% url 'home' %}" class="footertextlink">Home</a>
+                        </li>
+                        <li>
+                        <a href="{% url 'about' %}" class="footertextlink">About</a>
+                        </li>
+                        <li>
+                        <a href="{% url 'organizations' %}" class="footertextlink">Organizations</a>
+                        </li>
+                    </ul>
+                    </div>
+                    <div class="col">
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="{% url 'services' %}" class="footertextlink">Services</a>
+                        </li>
+                        <li>
+                        <a href="{% url 'newsletters' %}" class="footertextlink">Newsletters</a>
+                        </li>
+                        <li>
+                        <a href="{% url 'contactUs' %}" class="footertextlink">Contact Us</a>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- SECOND COLUMN END -->
+        
+            <hr class="clearfix w-100 d-md-none invisible">
+        
+            <!-- THIRD COLUMN START -->
+            <div class="col-md-4" id="footerthirdcol">
+                <div>
+                <h5 class="headerfooter">Always In Service</h5>
+                <p class="textmfooter" id="contactdesc">Get in touch with us through our channels!</p>
+                
+                <div class="formatting">
+                    <a href="mailto:coa.ls@obf.ateneo.edu" style = "text-decoration: none;">
+                        <button class="btn-circle">
+                            <i class="fa-solid fa-envelope fa-lg"></i>
+                        </button>
+                    </a>
+
+                    <a href="https://fb.com/coamanila" style = "text-decoration: none;" target = "_blank">
+                        <button class="btn-circle">
+                            <i class="fa-brands fa-facebook-f"></i>
+                            </button>
+                    </a>
+
+                    <a href="https://twitter.com/coamanila" style = "text-decoration: none;" target = "_blank">
+                        <button class="btn-circle">
+                            <i class="fa-brands fa-twitter"></i>
+                        </button>
+                    </a>
+
+                    <a href="https://instagram.com/coamanila" style = "text-decoration: none;" target = "_blank">
+                        <button class="btn-circle">
+                            <i class="fa-brands fa-instagram fa-lg"></i>
+                        </button>
+                    </a>
+                </div>
+                </div>
+            </div>
+            <!-- THIRD COLUMN END -->
+        
+            <hr class="clearfix w-100 d-md-none invisible">
+        
+            </div>
+        </div>
+    
+        
+        <!-- Copyright -->
+        <div class="container text-left py-3">
+            <hr style="color: white; height: 2px;" id="creditshr">
+            <p class="textfooter" id="credits">Designed by Dagny Yenko<img src="{% static 'images/Services_List Star.svg' %}" style="height: 12px; width: 9.53px;" class="mx-2">Developed by the Ateneo Management Information System</p>
+        </div>
+        <!-- Copyright -->
+        
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+    <script>
+        // SELECTED NAV TITLE (ACTIVE)
+        let home = document.getElementById('home')
+        let about = document.getElementById('about')
+        let org = document.getElementById('org')
+        let serv = document.getElementById('serv')
+        let news = document.getElementById('news')
+        let cont = document.getElementById('cont')
+
+        const hrefHome = 'home'
+        const hrefAbout = 'about'
+        const hrefOrg = 'organizations'
+        const hrefServ = 'services'
+        const hrefNews = 'newsletters'
+        const hrefContact = 'contactUs'
+        console.log(window.location.href)
+        window.addEventListener("load", function makeNavTitleActive(){
+            if(window.location.href.includes(hrefHome) || window.location.href == "http://localhost:8000/"){
+                home.classList.add('active')
+            }
+            else if(window.location.href.includes(hrefAbout)){
+                    about.classList.add('active')
+            }
+            else if(window.location.href.includes(hrefOrg)){
+                    org.classList.add('active')
+            }
+            else if(window.location.href.includes(hrefServ)){
+                    serv.classList.add('active')
+            }
+            else if(window.location.href.includes(hrefNews)){
+                    news.classList.add('active')
+            }
+            else if(window.location.href.includes(hrefContact)){
+                    cont.classList.add('active')
+            }
+        })
+
+        // NAV MENU
+        function showMenu(x){
+            // for hamburger to x transition
+            x.classList.toggle("change")
+
+            // to show/remove the menu itself
+            let menu = document.getElementById('navbarNavAltMarkup')
+            if(menu.classList.contains('show')){
+                menu.classList.remove('show')
+            }
+            else{
+                menu.classList.add('show')
+            }
+        }
+        
+        // SCROLL
+            // stores the previous Y coordinate and compares it to the new Y coordinate to know whether the user is scrolling down or up
+        var prevScrollpos = window.pageYOffset;
+        let menu = document.getElementById('navbarNavAltMarkup')
+        window.addEventListener('scroll', function fadeNavBar() {
+            var currentScrollPos = window.pageYOffset;
+            if(currentScrollPos == 0 || prevScrollpos > currentScrollPos || menu.classList.contains('show')){
+                document.querySelector("nav").style.opacity = 100;
+                document.querySelector("nav").style.visibility='visible';
+
+            }
+            else {
+                document.querySelector("nav").style.opacity = 0;
+                document.querySelector("nav").style.visibility='hidden';
+                
+                
+            }
+            prevScrollpos = currentScrollPos;
+        })
+
+    </script>
+
+<script>
+    let footerPosition = document.getElementById('footer')
+    let footerfirstcol = document.getElementById('footerfirstcol')
+    let firstcologo = document.getElementById('firstcologo')
+    let firstcoldesc = document.getElementById('firstcoldesc')
+    let firstcolul = document.getElementById('firstcolul')
+    let hr = document.getElementById('hr')
+    let credits = document.getElementById('credits')
+    let creditshr = document.getElementById('creditshr')
+    let contactdesc = document.getElementById('contactdesc')
+
+
+    let footersecondcol = document.getElementById('footersecondcol')
+    let footerthirdcol = document.getElementById('footerthirdcol')
+
+    function footerFirstColMobile(){
+      footerfirstcol.classList.add('row')
+      footerfirstcol.classList.add('mx-5')
+      footerfirstcol.classList.add('p-0')
+      firstcologo.classList.add('col-2')
+      firstcoldesc.classList.add('col-4')
+      firstcologo.classList.add('mx-2')
+      firstcoldesc.classList.add('mx-2')
+      firstcolul.style.marginTop='0'
+      footersecondcol.classList.add('mx-5')
+      footerthirdcol.classList.add('mx-5')
+      credits.classList.add('mx-5')
+      credits.classList.add('topmargin')
+      creditshr.classList.add('mx-5')
+    }
+
+    function removefooterFirstColMobile(){
+      footerfirstcol.classList.remove('row')
+      footerfirstcol.classList.remove('mx-5')
+      footerfirstcol.classList.remove('p-0')
+      firstcologo.classList.remove('mx-2')
+      firstcologo.classList.remove('col-2')
+      firstcoldesc.classList.remove('mx-2')
+      firstcoldesc.classList.remove('col-4')
+      firstcolul.style.marginTop='18px'
+      footersecondcol.classList.remove('mx-5')
+      footerthirdcol.classList.remove('mx-5')
+      credits.classList.remove('mx-5')
+      credits.classList.remove('topmargin')
+      creditshr.classList.remove('mx-5')
+    }
+
+    function footerFormat(){
+      if(window.innerWidth <= 767){
+        console.log(screen.width)
+        footerFirstColMobile()
+      }
+      else if(window.innerWidth > 767){
+        console.log(screen.width)
+        removefooterFirstColMobile()
+      }
+    }
+    window.addEventListener('resize',footerFormat)
+    window.addEventListener('load',footerFormat)
+
+    
+</script>
+
+
+
+    {% block script %}
+    {% endblock %}
+</body>
+</html>

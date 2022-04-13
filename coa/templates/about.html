@@ -1,0 +1,221 @@
+{% extends 'base.html' %} {% load static %} {% block title %}
+<title>About</title>
+{% endblock %} {% block content %}
+<div class="container">
+  <!-- TITLE -->
+  <div class="row mb-5">
+    <h2 class="orangeText">About</h2>
+  </div>
+
+  <div class="row">
+    <img
+      class="mx-auto"
+      src="{% static 'images/Illustration.svg' %}"
+      alt=""
+      style="width: 489px"
+    />
+
+    <div class="col-md-7 col-sm-12 my-auto mx-auto">
+      <h2 class="orangeText">What is COA - M?</h2>
+      {{aboutUsDescription.body|safe}}
+    </div>
+  </div>
+
+  <img
+    src="{% static 'images/Divider-ish.svg' %}"
+    alt=""
+    style="position: absolute; right: 0; z-index: -100"
+  />
+
+  <div class="row" style="margin-top: 162px">
+    <h2 class="orangeText">Vision</h2>
+  </div>
+
+  <div class="row">
+    <p class="body">{{aboutUsVision.body|safe}}</p>
+  </div>
+
+  <div class="row mt-5">
+    <h2 class="orangeText">Mission</h2>
+  </div>
+
+  <div class="row">
+    <p class="body">{{aboutUsMission.body|safe}}</p>
+  </div>
+
+  <div class="mb-4" style="text-align: right !important">
+    <img
+      src="{% static 'images/2stars.png' %}"
+      style="width: 100px; height: 100px"
+      alt=""
+    />
+  </div>
+
+  <div class="row">
+    <h2 class="orangeText">Offices & Clusters</h2>
+  </div>
+
+  <div class="row">
+    <p class="body">{{aboutUsOandC.body|safe}}</p>
+  </div>
+</div>
+<div class="w-100 menuContainer">
+  <div class="col d-flex justify-content-center menuSelection">
+    <button class="active" id="officesButton" onclick="selectOffices()">
+      OFFICES
+    </button>
+    <button id="clustersButton" onclick="selectClusters()">CLUSTERS</button>
+  </div>
+</div>
+<div class="container">
+  <!-- OFFICES -->
+  <div class="mt-5" id="officesAccordion" style="margin-bottom: 128px">
+    <div class="row">
+      {% for o in offices %}
+      <div style="margin-bottom: 16px">
+        <button class="accordionClusters subtitle1">
+          {{o.name|safe}}
+          <i class="fa-solid fa-angle-down arrowdown" style="float: right"></i>
+        </button>
+        <div class="accordionPanel">
+          <img
+            src="{{ o.officer_photo.url }}"
+            alt=""
+            class="officerPhoto officerPhotoCropper"
+          />
+
+          <p class="subtitle1 text-center mt-2 mb-0">{{o.officer_name|safe}}</p>
+
+          <p class="text-center m-0">{{o.officer_position}}</p>
+
+          <p class="text-center" style="color: #3b23ee">{{o.officer_email}}</p>
+
+          <div class="container">{{o.office_description|safe}}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- CLUSTERS -->
+  <div
+    class="mt-5 mb-6"
+    id="clustersAccordion"
+    style="display: none; margin-bottom: 128px"
+  >
+    <div class="row">
+      {% for c in clusters %}
+      <div style="margin-bottom: 16px">
+        <button class="accordionClusters">
+          <div class="row">
+            <div class="clusterPhotoCropper p-0 col-1 my-auto">
+              <img
+                src="{{c.logo.url}}"
+                alt=""
+                style="height: 20px; margin-left: 6.5px; margin-top: 6.5px"
+              />
+            </div>
+
+            <div class="col-9 m-0">
+              <p class="subtitle1 m-0">{{c.name}}</p>
+            </div>
+
+            <div
+              class="col-2 col-sm-1 my-auto justify-content-end d-flex arrowdowndiv"
+              style="float: right"
+            >
+              <i
+                class="fa-solid fa-angle-down arrowdown"
+                style="min-width: 100%; min-height: 100%"
+              ></i>
+            </div>
+          </div>
+        </button>
+
+        <div class="accordionPanel">
+          <img
+            src="{{ c.officer_photo.url }}"
+            alt=""
+            class="officerPhoto officerPhotoCropper"
+          />
+
+          <p class="subtitle1 text-center mt-2 mb-0">{{c.officer_name|safe}}</p>
+
+          <p class="text-center" style="color: #3b23ee">{{c.officer_email}}</p>
+
+          <p class="container">{{c.description|safe}}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block script %}
+<script>
+  var officesButton = document.getElementById("officesButton");
+  var clustersButton = document.getElementById("clustersButton");
+  var officesAccordion = document.getElementById("officesAccordion");
+  var clustersAccordion = document.getElementById("clustersAccordion");
+
+  function selectOffices() {
+    officesButton.classList = "active";
+    clustersButton.classList = "";
+    officesAccordion.style.display = "block";
+    clustersAccordion.style.display = "none";
+  }
+  function selectClusters() {
+    officesButton.classList = "";
+    clustersButton.classList = "active";
+    officesAccordion.style.display = "none";
+    clustersAccordion.style.display = "block";
+  }
+</script>
+
+<script>
+  var acc = document.getElementsByClassName("accordionClusters");
+  var panel = document.getElementsByClassName("accordionPanel");
+  var i;
+
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      panel.classList.toggle("active");
+
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
+    });
+  }
+</script>
+
+<!-- <script>
+  let arrowdown = document.getElementsByClassName("arrowdowndiv");
+
+  for (i in arrowdown) {
+    function clusterMobile() {
+      i.classList.remove("col-2");
+      i.classList.add("col-1");
+    }
+
+    function removeclusterMobile() {
+      i.classList.remove("col-1");
+      i.classList.add("col-2");
+    }
+
+    function clusterFormat() {
+      if (window.innerWidth <= 767) {
+        clusterMobile();
+      } else if (window.innerWidth > 767) {
+        removeclusterMobile();
+      }
+    }
+
+    window.addEventListener("resize", clusterFormat);
+    window.addEventListener("load", clusterFormat);
+  }
+</script> -->
+{% endblock %}

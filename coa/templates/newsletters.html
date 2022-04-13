@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>
+    Newsletters
+</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- TITLE -->
+    <div class="row mb-5">
+        <h2 class="orangeText">Newsletters</h2>
+    </div>
+    
+    <div class = "row">
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="dropdown mt-2" style = "position: static; top: 0; z-index: 100;">
+                <div class="clusterSortMenu" type="button" id="newslettersDropDownMenuDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <p class = "body" id = "currentDateFilter">Sort by: 
+                        <img src="{% static 'images/union.png' %}" style = "width: 9px; height: 5px; float: right; margin-top: 10px;"alt="">
+                  </p>
+                </div>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id = "elementsDropdown" style = "width: inherit">
+                  <a onclick = "setDateFilterState(title = `Newest First`)" style = "cursor: pointer"  class="dropdown-item body secondDropdownBody" href="#">Newest First</a> 
+                  <a onclick = "setDateFilterState(title = `Oldest First`)" style = "cursor: pointer"  class="dropdown-item body secondDropdownBody" href="#">Oldest First</a> 
+                </div>
+            </div>
+        </div> -->
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div id = "testDropdown" class="dropdown mt-2" style = "width: 286px;">
+                <div class = "dropdownHover" style = "background: #3B23EE; padding: 8px 16px; border-radius: 8px; height: 40px; color: white;" class="" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <p class = "" id = "currentDateFilter">Sort by: 
+                        <img src="{% static 'images/union.png' %}" style = "width: 9px; height: 5px; float: right; margin-top: 10px;"alt="">
+                  </p>
+                </div>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style = "width: inherit">
+                  <a onclick = "setDateFilterState(title = `Newest First`)" style = "cursor: pointer"  class="dropdown-item body" href="#">Newest First</a> 
+                  <a onclick = "setDateFilterState(title = `Oldest First`)" style = "cursor: pointer"  class="dropdown-item body" href="#">Oldest First</a> 
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div id = "wholeDropdown1" class="dropdown mt-2 " style= "width: 286px;">
+                <div class = "dropdownHover" style = "background: #3B23EE; padding: 8px 16px; border-radius: 8px; height: 40px; color: white;" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style = "width: 283px; height: 40px;">
+                  <p class = "body" id = "currentFilter">Category: 
+                        <img src="{% static 'images/union.png' %}" style = "width: 9px; height: 5px; float: right; margin-top: 10px;"alt="">
+                  </p>
+                </div>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style = "width: inherit">
+                  <a onclick = "setFilterState(title = `All`)" style = "cursor: pointer"  class="dropdown-item body" href="#">All</a> 
+                  {% for c in categories %}
+                  <a onclick = "setFilterState(title = `{{c.title}}`)" style = "cursor: pointer"  class="dropdown-item body">{{ c.title }}</a>
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-4 col-sm-12">
+            <button class = "mt-2" onclick="applyFilters()" id = "newsletterApplyButton">Apply</button>
+        </div>
+
+
+    </div>
+
+
+    <!-- NEWSLETTERS FRAME -->
+    <!-- DESKTOP -->
+
+    <!-- OLD -->
+    <div>
+        <div class="row pt-5 mb-4 desktopNewsletters" id="desktopNewslettersChecker" style="display: block;">
+            {% for n in newsletter %}
+            <div class="row newsletterWhole mb-5" style="cursor: pointer; display: none;" onclick="">
+                <div class="col-md-4 col-sm-12" style="padding-right: 0px;">
+                    <img src="{{ n.photo.url }}" class="newsletterImage" alt="">
+                </div>
+                <div class="col-md-8 newsletterRow" style="padding-left: 30px; height: 216px;">
+                    <p class="mt-4"><span class="newsletterCategory"><label>{{ n.category }}</label></span></p>
+                    <h3>{{ n.title }}</h3>
+                    <p class="small grayText">{{ n.author }} • {{n.date.day}} {{n.date|date:'F'}} {{n.date.year}}</p>
+                    <p class="body">{{ n.content|safe }}</p>
+    
+                </div>
+            </div>
+    
+            {% endfor %}
+        </div>
+    
+        <!-- MOBILE -->
+        <div class="row pt-5 mb-3 mobileNewsletters" id="desktopNewslettersCheckerMobile" style="display: none;">
+            {% for n in newsletter %}
+            <div class="row px-0 mb-5 newsletterRowMobile" style="transition: 0.25s; border-radius: 12px; background: #FFC100; margin-left: 2px; margin-right: 2px; box-shadow: 0px 2px 4px rgba(21, 21, 21, 0.25);     white-space: nowrap !important;
+                overflow: hidden !important; display: none;
+                text-overflow: ellipsis !important; width: 85%; margin: auto;">
+                <img style="margin-bottom: 24px" class="px-0  newsletterImageMobile" src="{{ n.photo.url }}"></img>
+                <p><span class="newsletterCategory"><label>{{ n.category }}</label></span></p>
+                <h3>{{ n.title }}</h3>
+                <p class="small grayText">{{ n.author }} • {{n.date.day}} {{n.date|date:'F'}} {{n.date.year}}</p>
+                {{ n.content|safe }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="row mt-5">
+        <button id="newsletterLoadMoreButton" onclick="newsletterRenderMore()" class="text-center"
+            style="width: 144px; height: 56px; margin: auto; margin-bottom: 128px">Load More</button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<script>
+    counter = 5;
+    firstInstance = true;
+    reverse = false;
+    var choiceFilter = "";
+    var choiceDateFilter = "";
+
+    if(localStorage.getItem("currentFilter") === null){
+        console.log("filter null")
+        localStorage.setItem("currentFilter", "All")
+    }
+
+    if(localStorage.getItem("currentDateFilter") === null){
+        console.log("date filter null")
+        localStorage.setItem("currentDateFilter", "Newest First")
+    }
+
+    $.fn.reverseChildren = function() {
+        return this.each(function(){
+            var $this = $(this);
+            $this.children().each(function(){ $this.prepend(this) });
+        });
+    };
+
+    if (localStorage.getItem("currentFilter") != null || localStorage.getItem("currentFilter") != ""){
+        filterState = localStorage.getItem("currentFilter");
+        document.getElementById("currentFilter").innerHTML = "Category: " + localStorage.getItem("currentFilter");
+        document.getElementById("wholeDropdown1").style.display = "block";
+        var x = document.createElement("IMG");
+        x.src = '../static/images/union.png';
+        x.style.width = "9px";
+        x.style.height = "5px";
+        x.style.float = "right";
+        x.style.marginTop = "10px";
+        document.getElementById("currentFilter").appendChild(x);
+    } else {
+        localStorage.setItem("currentFilter", "All")
+        filterState = localStorage.getItem("currentFilter");
+        document.getElementById("currentFilter").innerHTML = "Category: " + localStorage.getItem("currentFilter");
+        var x = document.createElement("IMG");
+        x.src = '../static/images/union.png';
+        x.style.width = "9px";
+        x.style.height = "5px";
+        x.style.float = "right";
+        x.style.marginTop = "10px";
+        document.getElementById("currentFilter").appendChild(x);
+    }
+
+    if (localStorage.getItem("currentDateFilter") != null || localStorage.getItem("currentDateFilter") != ""){
+        dateState = localStorage.getItem("currentDateFilter");
+        document.getElementById("currentDateFilter").innerHTML = "Sort by: " + localStorage.getItem("currentDateFilter");
+        var x = document.createElement("IMG");
+        x.src = '../static/images/union.png';
+        x.style.width = "9px";
+        x.style.height = "5px";
+        x.style.float = "right";
+        x.style.marginTop = "10px";
+        document.getElementById("currentDateFilter").appendChild(x);
+    } else {
+        localStorage.setItem("currentFilter", "Newest First")
+        dateState = localStorage.getItem("currentFilter");
+        document.getElementById("currentDateFilter").innerHTML = "Sort by: " + localStorage.getItem("currentDateFilter");
+        var x = document.createElement("IMG");
+        x.src = '../static/images/union.png';
+        x.style.width = "9px";
+        x.style.height = "5px";
+        x.style.float = "right";
+        x.style.marginTop = "10px";
+        document.getElementById("currentDateFilter").appendChild(x);
+    }
+
+    // INITIAL FILTER
+    function initialFilter(){
+        filterState = localStorage.getItem("currentFilter");
+        dateState = localStorage.getItem("currentDateFilter");
+        newsletterRender();
+    }
+    initialFilter();
+
+    // Setting Category Filter State
+    function setFilterState(title){
+        choiceFilter = title;
+        document.getElementById("currentFilter").innerHTML = "Category: " + title;
+        var x = document.createElement("IMG");
+        x.src = '../static/images/union.png';
+        x.style.width = "9px";
+        x.style.height = "5px";
+        x.style.float = "right";
+        x.style.marginTop = "10px";
+        document.getElementById("currentFilter").appendChild(x);
+        showCounter = 5;
+        counter = 5;
+        console.log("Choice Filter: " + choiceFilter)
+        // newsletterRender();
+    }
+
+    function setDateFilterState(title){
+        choiceDateFilter = title;
+        document.getElementById("currentDateFilter").innerHTML = "Sort by: " + title;
+        var x = document.createElement("IMG");
+        x.src = '../static/images/union.png';
+        x.style.width = "9px";
+        x.style.height = "5px";
+        x.style.float = "right";
+        x.style.marginTop = "10px";
+        document.getElementById("currentDateFilter").appendChild(x);
+    }
+
+    // Applying Category + Date Filter States
+    function applyFilters(){
+        console.log(choiceFilter);
+
+        if (choiceFilter == ""){
+            choiceFilter = document.getElementById("currentFilter").textContent.split(": ")[1];
+        }
+
+        if (choiceDateFilter == ""){
+            choiceDateFilter = document.getElementById("currentDateFilter").textContent.split(": ")[1];
+        }
+        var filter = choiceFilter;
+        var dateFilter = choiceDateFilter;
+
+        console.log("Filter: " + filter);
+
+        filterState = filter;
+        dateState = dateFilter;
+        
+        firstInstance = true;
+        showCounter = 5;
+        counter = 5;
+        
+        // Saving Applied Filters to LocalStorage
+        localStorage.setItem("currentFilter", filterState);
+        localStorage.setItem("currentDateFilter", dateState);
+
+        document.getElementById("newsletterLoadMoreButton").style.display = "";
+        newsletterRender();
+    }
+
+    // Renders Newsletters based on Category + Date Filter States
+    function newsletterRender() {
+        if (dateState == "Newest First"){
+            if (reverse == true){
+                $('#desktopNewslettersChecker').reverseChildren();
+                $('#desktopNewslettersCheckerMobile').reverseChildren();
+                reverse = false;
+            }
+        } else if (dateState == "Oldest First"){
+            if (reverse == false){
+                $('#desktopNewslettersChecker').reverseChildren();
+                $('#desktopNewslettersCheckerMobile').reverseChildren();
+                reverse = true;
+            }
+        }
+
+        children = document.getElementById("desktopNewslettersChecker").children;
+        childrenMobile = document.getElementById("desktopNewslettersCheckerMobile").children;
+        for (var i = 0; i < children.length; i++) {
+            children[i].style.display = "none"
+            childrenMobile[i].style.display = "none"
+        }
+
+        if (filterState != "All") {
+            counter = 5;
+            console.log(filterState);
+            filterCounter = 0;
+
+            if (firstInstance){
+                showCounter = 5;
+            }
+            for (var i = 0; i < children.length; i++) {
+                var test = children[i].children[1].children[0].children[0].children[0].textContent;
+                if (test == filterState){
+                    filterCounter +=1;
+                    
+                }
+            }
+            console.log(filterCounter);
+            console.log(showCounter);
+            for (var i = 0; i < children.length; i++){
+                var test = children[i].children[1].children[0].children[0].children[0].textContent;
+                console.log(test);
+                console.log(filterState);
+                if (test == filterState){
+                    console.log('reach');
+                    console.log(i)
+                    console.log(showCounter)
+                    children[i].style.display = ""
+                    childrenMobile[i].style.display = ""       
+                    if (i == showCounter+1){
+                        break
+                    }
+                }
+
+                if (i == children.length) {
+                    break
+                }
+            }
+        }
+        
+        // ALL
+        else {
+
+            for (var i = 0; i < counter; i++) {
+                console.log(i)
+                console.log(counter)
+                if (i == children.length) {
+                    break
+                }
+                children[i].style.display = "";
+                childrenMobile[i].style.display = "";
+            }
+        }
+        checkIfAllRendered();
+    }
+
+
+
+    function newsletterRenderMore() {
+        if (filterState != "All"){
+            showCounter += 5;
+            firstInstance = false;
+        }
+        else{
+            console.log("hello")
+            counter += 5;
+        }
+
+        newsletterRender();
+    }
+
+    function checkIfAllRendered() {
+        if (filterState != "All"){
+            if (filterCounter <= showCounter) {
+                document.getElementById("newsletterLoadMoreButton").style.display = "none";
+            }
+        } 
+        else{
+            if (children.length <= counter) {
+                document.getElementById("newsletterLoadMoreButton").style.display = "none";
+            }
+        }
+
+    }
+
+    // var news = document.querySelector(".newsletterWhole")
+    // console.log(news)
+
+    // fixing margins
+    function buttonsFormat(){
+        if(window.innerWidth <= 768){
+            document.getElementById("newsletterApplyButton").classList.remove("mt-2");
+            document.getElementById("newsletterApplyButton").classList.add("mt-4");
+            // document.getElementById("dropdownMenuButton").classList.add("w-100");
+            document.getElementById("testDropdown").width = "0px";
+            document.getElementById("testDropdown").classList.add("w-100");
+            document.getElementById("wholeDropdown1").width = "0px";
+            document.getElementById("wholeDropdown1").classList.add("w-100");
+            
+        } else {
+            document.getElementById("newsletterApplyButton").classList.remove("mt-4");
+            document.getElementById("newsletterApplyButton").classList.add("mt-2");
+            // document.getElementById("dropdownMenuButton").classList.remove("w-100");
+            document.getElementById("testDropdown").width = "286px";
+            document.getElementById("testDropdown").classList.remove("w-100");
+            document.getElementById("wholeDropdown1").width = "286px";
+            document.getElementById("wholeDropdown1").classList.remove("w-100");
+        }
+    }
+    window.addEventListener('resize',buttonsFormat)
+    window.addEventListener('load',buttonsFormat)
+</script>
+{% endblock content %}

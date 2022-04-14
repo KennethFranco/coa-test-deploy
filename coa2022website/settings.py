@@ -30,9 +30,9 @@ MEDIA_URL = "/media/"
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', ".herokuapp.com", ".coamanila.com", "www.coamanila.com", 'localhost', 'coa-test-heroku.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', ".herokuapp.com", ".coamanila.com", "www.coamanila.com", 'localhost']
 
 
 # Application definition

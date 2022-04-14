@@ -440,30 +440,34 @@
     }
   </script>
 
-  <!-- <script>
+  <script>
     var availButtonContainer = document.getElementsByClassName(
       "availButtonContainer"
     );
     var subContainer = document.getElementsByClassName("subContainer");
     function availButtonRearrange() {
-      for (i in availButtonContainer) {
-        if (window.innerWidth >= 768) {
-          i.classList = "col-2";
-        } else {
-          i.classList = "row";
+      
+      if(window.innerWidth >= 768){
+        for (i of availButtonContainer) {
+          i.classList = "col-2 availButtonContainer";
         }
-        for (j in subContainer) {
-          if (window.innerWidth >= 768) {
-            j.classList = "";
-          } else {
-            j.classList = "d-flex justify-content-end";
-          }
+        for(j of subContainer){
+          j.classList = "subContainer";
+        }
+      }
+      else if(window.innerWidth < 768){
+        for (i of availButtonContainer) {
+          i.classList = "row availButtonContainer";
+        }
+        for(j of subContainer){
+          j.classList = "subContainer d-flex justify-content-end";
         }
       }
     }
-    window.addEventListener("resize", availButtonRearrange);
-    window.addEventListener("load", availButtonRearrange);
-  </script> -->
+    window.addEventListener("resize", availButtonRearrange, false);
+    // window.addEventListener("load", availButtonRearrange);
+
+  </script>
 
   {% endblock %}
 </body>
